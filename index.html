@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top">
+    <title>会議予約システム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .booked {
+            background-color: #ffcccc;
+        }
+
+        .available {
+            background-color: #ccffcc;
+        }
+    </style>
+    <script>
+        function loadMeetings() {
+            google.script.run.withSuccessHandler(displayMeetings).getMeetings();
+        }
+
+        function displayMeetings(data) {
+            const table = document.getElementById('meetingTable');
+            data.forEach((row, index) => {
+                if (index > 0) {
+                    const tr = document.createElement('tr');
+                    row.forEach((cell, cellIndex) => {
+                        const td = document.createElement('td');
+                        td.innerText = cell;
+                        if (cellIndex === 3 && cell !== '') {
+                            tr.classList.add('booked');
+                        }
+                        tr.appendChild(td);
+                    });
+                    if (row[3] === '') {
+                        const td = document.createElement('td');
+                        const button = document.createElement('button');
+                        button.innerText = '予約';
+                        button.onclick = function () {
+                            bookMeeting(row[0], row[1]);
+                        };
+                        td.appendChild(button);
+                        tr.appendChild(td);
+                    }
+                    table.appendChild(tr);
+                }
+            });
+        }
+
+        function bookMeeting(date, time) {
+            const user = prompt('予約者名を入力してください:');
+            if (user) {
+                google.script.run.withSuccessHandler((message) => {
+                    alert(message);
+                    location.reload();
+                }).bookMeeting(date, time, user);
+            }
+        }
+    </script>
+</head>
+
+<body onload="loadMeetings()">
+    <h1>会議予約システム</h1>
+    <table id="meetingTable">
+        <tr>
+            <th>日付</th>
+            <th>時間</th>
+            <th>担当者</th>
+            <th>予約者</th>
+            <th>操作</th>
+        </tr>
+    </table>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</body>
+
+</html>

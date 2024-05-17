@@ -1,0 +1,39 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+#calendar {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.slot {
+    width: 200px;
+    height: 100px;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.slot.available {
+    background-color: #c8e6c9;
+}
+
+.slot.unavailable {
+    background-color: #ffcdd2;
+    cursor: not-allowed;
+}
+
+.slot.reserved {
+    background-color: #bbdefb;
+}
